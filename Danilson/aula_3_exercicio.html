@@ -1,0 +1,249 @@
+
+<html lang="pt-BR">
+    
+    
+    
+    
+<head>
+    
+    
+    <meta charset="utf-8">
+    <title>Formulário em Tabela</title>
+    
+    
+    
+    <style>
+        
+        
+        
+        
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+            background-color: #f4f4f9;
+        }
+        
+        
+        
+        form {
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            max-width: 850px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        
+        
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        
+        
+        
+        td {
+            padding: 10px;
+            vertical-align: middle;
+        }
+        
+        
+        
+        
+        input[type="text"],
+        input[type="number"],
+        input[type="email"],
+        input[type="date"] {
+            width: 100%;
+            padding: 6px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        
+        
+        
+        
+        textarea {
+            width: 100%;
+            height: 70px;
+            padding: 6px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        
+        
+        
+        
+        .radio-group label {
+            margin-right: 15px;
+            font-weight: normal;
+        }
+        
+        
+        
+        h2 {
+            margin-top: 0;
+            color: #333;
+            text-align: center;
+        }
+        
+        
+        
+        
+        
+    </style>
+    
+    
+    
+    
+</head>
+    
+    
+ <!-- ################################################################# -->   
+    
+    
+<body>
+    
+    
+
+    <form>
+        
+        
+        
+        
+        <h2>Formulário Militar</h2>
+        
+        
+<!-- ################################################################# -->        
+        
+        
+        <table>
+            <tr>
+                <td>
+                    <label>Nome:</label>
+                    <input type="text" placeholder="Nome completo">
+                </td>
+                
+                
+                
+                <td style="width: 120px;">
+                    <label>Idade:</label>
+                    <input type="number" min="0" max="99">
+                </td>
+                
+                
+                
+                <td style="width: 200px;">
+                    <label>Data de Nascimento:</label>
+                    <input type="date">
+                </td>
+                
+                
+            </tr>
+
+            
+            
+            
+<!-- ################################################################# -->            
+            
+            
+            
+            
+            <tr>
+                <td>
+                    <label>Email:</label>
+                    <input type="email" placeholder="exemplo@email.com">
+                </td>
+                
+                
+                
+                
+                <td colspan="2">
+                    <label>CPF:</label>
+                    <input type="text" placeholder="000.000.000-00">
+                </td>
+                
+                
+                
+                
+                
+            </tr>
+
+            
+<!-- ################################################################# -->
+            
+            
+            <tr>
+                <td>
+                    <label>ID Militar:</label>
+                    <input type="text">
+                </td>
+                
+                
+                
+                <td colspan="2">
+                    <label>Seção:</label>
+                    <input type="text">
+                </td>
+                
+                
+                
+                
+            </tr>
+
+            
+<!-- ################################################################# -->            
+            
+            
+            
+            <tr>
+                <td colspan="3">
+                    <label>Endereço:</label>
+                    <textarea placeholder="Digite seu endereço completo..."></textarea>
+                </td>
+            </tr>
+
+            
+            
+  <!-- ################################################################# -->       
+            
+            
+            
+            
+            <tr>
+                
+                
+                
+                <td colspan="3">
+                    <label><strong>Posto / Graduação:</strong></label><br><br>
+                    
+                    <div class="radio-group">
+                        
+                        
+                        
+                        <label><input type="radio" name="escolha"> SOLDADO</label>
+                        <label><input type="radio" name="escolha"> CABO</label>
+                        <label><input type="radio" name="escolha"> 3°SARGENTO</label>
+                        <label><input type="radio" name="escolha"> 2°SARGENTO</label>
+                        <label><input type="radio" name="escolha"> 1°SARGENTO</label>
+                        
+                        
+                        
+                   
+                    </div>
+                    
+                </td>
+                
+            </tr>
+            
+        </table>
+        
+    </form>
+
+    
+</body>
+</html>
