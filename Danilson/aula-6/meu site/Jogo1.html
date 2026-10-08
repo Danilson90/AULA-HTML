@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Cyber War - Game Store</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #0f0f1a;
+            color: white;
+        }
+
+        header {
+            background: #17172b;
+            padding: 20px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #6c2cff;
+        }
+
+        header h1 {
+            color: #8b5cf6;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 25px;
+        }
+
+        nav a:hover {
+            color: #8b5cf6;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 60px auto;
+            padding: 20px;
+        }
+
+        .jogo {
+            display: grid;
+            grid-template-columns: 400px 1fr;
+            gap: 50px;
+            background: #191927;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+        }
+
+        .capa img {
+            width: 100%;
+            border-radius: 15px;
+        }
+
+        .informacoes h2 {
+            font-size: 40px;
+            margin-bottom: 15px;
+            color: #8b5cf6;
+        }
+
+        .descricao {
+            color: #ccc;
+            line-height: 1.7;
+            margin: 20px 0;
+        }
+
+        .avaliacao {
+            color: #ffd700;
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+
+        .preco {
+            font-size: 32px;
+            font-weight: bold;
+            color: #fff;
+            margin: 25px 0;
+        }
+
+        .botao {
+            display: inline-block;
+            background: #6c2cff;
+            color: white;
+            text-decoration: none;
+            padding: 15px 35px;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .botao:hover {
+            background: #8b5cf6;
+            transform: scale(1.03);
+        }
+
+        .detalhes {
+            margin-top: 25px;
+            color: #aaa;
+            line-height: 1.8;
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px;
+            background: #17172b;
+            color: #aaa;
+            margin-top: 50px;
+        }
+
+        @media (max-width: 800px) {
+            .jogo {
+                grid-template-columns: 1fr;
+            }
+
+            .capa {
+                max-width: 400px;
+                margin: auto;
+            }
+
+            .informacoes h2 {
+                font-size: 32px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>🎮 Game Store</h1>
+
+        <nav>
+            <a href="index.html">Início</a>
+            <a href="index.html#jogos">Jogos</a>
+        </nav>
+    </header>
+
+    <main class="container">
+
+        <section class="jogo">
+
+            <div class="capa">
+                <img
+                    src="https://placehold.co/600x800/201050/ffffff?text=Cyber+War"
+                    alt="Capa do jogo Cyber War">
+            </div>
+
+            <div class="informacoes">
+
+                <h2>Cyber War</h2>
+
+                <div class="avaliacao">
+                    ⭐⭐⭐⭐⭐ 4.8/5
+                </div>
+
+                <p class="descricao">
+                    Entre em um mundo futurista dominado pela tecnologia.
+                    Enfrente inimigos perigosos, explore cidades gigantes
+                    e descubra os segredos por trás da guerra cibernética.
+                </p>
+
+                <div class="detalhes">
+                    <strong>Gênero:</strong> Ação / Aventura<br>
+                    <strong>Desenvolvedora:</strong> Game Studio<br>
+                    <strong>Plataforma:</strong> PC<br>
+                    <strong>Idioma:</strong> Português
+                </div>
+
+                <div class="preco">
+                    R$ 149,90
+                </div>
+
+                <a href="#" class="botao">
+                    🛒 Comprar agora
+                </a>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <footer>
+        © 2026 Game Store - Todos os direitos reservados.
+    </footer>
+
+</body>
+</html>
