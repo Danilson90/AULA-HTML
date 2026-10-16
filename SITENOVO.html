@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Store - Loja Virtual de Jogos</title>
+    
+    <!-- ========================================== -->
+    <!-- ESTILOS CSS (Aparência e Responsividade)   -->
+    <!-- ========================================== -->
+    <style>
+        /* Reseta margens, preenchimentos e define a fonte padrão */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Configuração do corpo da página (Fundo escuro e layout flexível) */
+        body {
+            background: #0f0f1a;
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Cabeçalho fixo no topo com logo e menu */
+        header {
+            background: #17172b;
+            padding: 20px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #6c2cff;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        /* Estilo do logotipo da loja */
+        header h1 {
+            color: #8b5cf6;
+            font-size: 28px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Barra de navegação do cabeçalho */
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        /* Links de navegação */
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            transition: 0.3s;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        nav a:hover {
+            color: #8b5cf6;
+        }
+
+        /* Badge/Contador de itens no carrinho */
+        .badge-cart {
+            background: #e63946;
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+            padding: 2px 8px;
+            border-radius: 20px;
+            margin-left: 4px;
+        }
+
+        /* Seção principal dinâmica */
+        main {
+            flex: 1;
+        }
+
+        /* Banner de destaque na página inicial */
+        .banner {
+            text-align: center;
+            padding: 60px 20px;
+            background: linear-gradient(135deg, #25105c, #111122);
+        }
+
+        .banner h2 {
+            font-size: 42px;
+            margin-bottom: 15px;
+        }
+
+        .banner p {
+            color: #ccc;
+            font-size: 18px;
+        }
+
+        /* Seção que contém a listagem de produtos */
+        .produtos {
+            padding: 50px 8%;
+        }
+
+        .produtos h2 {
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 32px;
+        }
+
+        /* Grid responsivo para alinhar os cards dos jogos */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 25px;
+        }
+
+        /* Card individual de cada jogo */
+        .card {
+            background: #191927;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.4);
+            transition: 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Efeito ao passar o mouse por cima do card */
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 30px rgba(108,44,255,0.3);
+        }
+
+        /* Wrapper da imagem do card */
+        .card-img-wrapper {
+            cursor: pointer;
+            height: 250px;
+            overflow: hidden;
+        }
+
+        .card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+
+        .card:hover img {
+            transform: scale(1.05);
+        }
+
+        /* Conteúdo textual dentro do card */
+        .card-content {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        .card h3 {
+            font-size: 21px;
+            margin-bottom: 10px;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .card h3:hover {
+            color: #8b5cf6;
+        }
+
+        .card p {
+            color: #aaa;
+            margin-bottom: 15px;
+            font-size: 14px;
+            flex: 1;
+            line-height: 1.4;
+        }
+
+        /* Estilização do preço do jogo */
+        .preco {
+            color: #8b5cf6;
+            font-size: 23px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        /* Botões dentro do card */
+        .botoes-card {
+            display: flex;
+            gap: 10px;
+        }
+
+        /* Estilo padrão de botões */
+        .botao {
+            display: inline-block;
+            text-align: center;
+            background: #6c2cff;
+            color: white;
+            padding: 12px 18px;
+            border-radius: 8px;
+            text-decoration: none;
+            border: none;
+            font-weight: bold;
+            font-size: 15px;
+            cursor: pointer;
+            transition: 0.3s;
+            flex: 1;
+        }
+
+        .botao:hover {
+            background: #8b5cf6;
+            transform: scale(1.02);
+        }
+
+        /* Variação de botão secundário */
+        .botao-secundario {
+            background: #2a2a40;
+            color: #fff;
+        }
+
+        .botao-secundario:hover {
+            background: #3b3b5c;
+        }
+
+        /* Container padrão para páginas internas (Detalhes e Carrinho) */
+        .container {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        /* Layout da página de detalhes do jogo */
+        .jogo-detalhe {
+            display: grid;
+            grid-template-columns: 380px 1fr;
+            gap: 40px;
+            background: #191927;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+        }
+
+        .capa img {
+            width: 100%;
+            height: 480px;
+            object-fit: cover;
+            border-radius: 15px;
+        }
+
+        .informacoes h2 {
+            font-size: 38px;
+            margin-bottom: 15px;
+            color: #8b5cf6;
+        }
+
+        .descricao {
+            color: #ccc;
+            line-height: 1.7;
+            margin: 20px 0;
+            font-size: 16px;
+        }
+
+        .avaliacao {
+            color: #ffd700;
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+
+        .preco-detalhe {
+            font-size: 32px;
+            font-weight: bold;
+            color: #fff;
+            margin: 25px 0;
+        }
+
+        .detalhes {
+            margin: 20px 0;
+            color: #aaa;
+            line-height: 1.8;
+            background: #131320;
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .acoes-detalhe {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        /* Seção do Carrinho de Compras */
+        .carrinho {
+            background: #191927;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        /* Item individual listado no carrinho */
+        .produto-item {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 20px 0;
+            border-bottom: 1px solid #333;
+        }
+
+        .produto-item img {
+            width: 90px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .produto-info {
+            flex: 1;
+        }
+
+        .produto-info h3 {
+            margin-bottom: 8px;
+            font-size: 20px;
+        }
+
+        .produto-info p {
+            color: #aaa;
+            font-size: 14px;
+        }
+
+        /* Controle de quantidade de itens no carrinho (+ e -) */
+        .qtd-controle {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #131320;
+            padding: 5px 12px;
+            border-radius: 8px;
+        }
+
+        .qtd-btn {
+            background: none;
+            border: none;
+            color: #8b5cf6;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            padding: 0 5px;
+        }
+
+        .qtd-btn:hover {
+            color: #fff;
+        }
+
+        .preco-item {
+            color: #8b5cf6;
+            font-size: 20px;
+            font-weight: bold;
+            min-width: 110px;
+            text-align: right;
+        }
+
+        /* Botão para remover item do carrinho */
+        .remover {
+            background: #e63946;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-weight: bold;
+        }
+
+        .remover:hover {
+            background: #ff4d5a;
+        }
+
+        /* Mensagem exibida quando o carrinho está vazio */
+        .carrinho-vazio {
+            text-align: center;
+            padding: 50px 20px;
+            color: #aaa;
+        }
+
+        .carrinho-vazio p {
+            font-size: 20px;
+            margin-bottom: 25px;
+        }
+
+        /* Seção do valor total do carrinho */
+        .total {
+            text-align: right;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #2a2a40;
+        }
+
+        .total h3 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+
+        .total span {
+            color: #8b5cf6;
+        }
+
+        /* Notificação flutuante (Toast) ao adicionar itens */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #6c2cff;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+            display: none;
+            align-items: center;
+            gap: 10px;
+            z-index: 1000;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(100px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        /* Rodapé da página */
+        footer {
+            text-align: center;
+            padding: 25px;
+            background: #17172b;
+            color: #aaa;
+            margin-top: 50px;
+            border-top: 1px solid #22223b;
+        }
+
+        /* Media Queries para Responsividade em Telas Menores */
+        @media (max-width: 850px) {
+            .jogo-detalhe {
+                grid-template-columns: 1fr;
+            }
+            .capa img {
+                height: 350px;
+                max-width: 300px;
+                margin: 0 auto;
+                display: block;
+            }
+            .informacoes h2 { font-size: 30px; }
+            .produto-item { flex-wrap: wrap; gap: 15px; }
+            .preco-item { text-align: left; }
+        }
+
+        @media (max-width: 600px) {
+            header { padding: 15px 5%; }
+            header h1 { font-size: 22px; }
+            .banner h2 { font-size: 28px; }
+            .produtos { padding: 30px 5%; }
+            .acoes-detalhe { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ========================================== -->
+    <!-- CABEÇALHO (Header)                         -->
+    <!-- ========================================== -->
+    <header>
+        <!-- Logotipo da loja (clicar leva para a home) -->
+        <h1 onclick="mostrarPagina('home')">🎮 Game Store</h1>
+        
+        <!-- Menu de navegação -->
+        <nav>
+            <a onclick="mostrarPagina('home')">Início</a>
+            <a onclick="mostrarPagina('home'); setTimeout(() => { document.getElementById('jogos').scrollIntoView({behavior: 'smooth'}); }, 100)">Jogos</a>
+            <a onclick="mostrarPagina('carrinho')">
+                🛒 Carrinho <span id="cart-count" class="badge-cart">0</span>
+            </a>
+        </nav>
+    </header>
+
+    <!-- ========================================== -->
+    <!-- CONTEÚDO PRINCIPAL (Renderizado via JS)    -->
+    <!-- ========================================== -->
+    <main id="app-content">
+        <!-- O conteúdo (Home, Detalhes ou Carrinho) aparece aqui dinamicamente -->
+    </main>
+
+    <!-- ========================================== -->
+    <!-- RODAPÉ (Footer)                            -->
+    <!-- ========================================== -->
+    <footer>
+        © 2026 Game Store - Todos os direitos reservados.
+    </footer>
+
+    <!-- Notificação toast flutuante -->
+    <div id="toast" class="toast">
+        <span id="toast-msg">Item adicionado ao carrinho!</span>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- LÓGICA JAVASCRIPT                          -->
+    <!-- ========================================== -->
+    <script>
+        // --- BASE DE DADOS DOS JOGOS ---
+        // Lista contendo todas as informações dos produtos disponíveis na loja
+        const jogos = [
+            {
+                id: 'mario',
+                nome: 'Super Mario World',
+                preco: 149.90,
+                avaliacao: '⭐⭐⭐⭐⭐ 4.8/5',
+                imagem: 'https://images.unsplash.com/photo-1612287230202-1ff1d85d1bdf?q=80&w=800&auto=format&fit=crop',
+                descricao: 'Super Mario World é um clássico jogo de aventura. Mario e Luigi embarcam em uma jornada pelo mundo dos dinossauros para salvar a Princesa Peach do vilão Bowser com a ajuda do dinossauro Yoshi!',
+                genero: 'Ação / Aventura',
+                desenvolvedora: 'Nintendo',
+                plataforma: 'SNES / PC',
+                idioma: 'Português'
+            },
+            {
+                id: 'mortal',
+                nome: 'Mortal Kombat',
+                preco: 99.90,
+                avaliacao: '⭐⭐⭐⭐⭐ 4.9/5',
+                imagem: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=800&auto=format&fit=crop',
+                descricao: 'Mortal Kombat é uma icônica franquia de jogos de luta com combates intensos, golpes especiais impressionantes e os lendários Fatalities com personagens como Scorpion e Sub-Zero.',
+                genero: 'Luta',
+                desenvolvedora: 'NetherRealm Studios',
+                plataforma: 'PC / Consoles',
+                idioma: 'Português'
+            },
+            {
+                id: 'donkey',
+                nome: 'Donkey Kong',
+                preco: 129.90,
+                avaliacao: '⭐⭐⭐⭐⭐ 4.7/5',
+                imagem: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=800&auto=format&fit=crop',
+                descricao: 'Junte-se a Donkey Kong e Diddy Kong em uma missão para recuperar seu estoque de bananas roubado pelo vilão King K. Rool através de dezenas de fases divertidas!',
+                genero: 'Plataforma / Aventura',
+                desenvolvedora: 'Rare / Nintendo',
+                plataforma: 'PC / SNES',
+                idioma: 'Português'
+            },
+            {
+                id: 'street',
+                nome: 'Street Fighter',
+                preco: 79.90,
+                avaliacao: '⭐⭐⭐⭐⭐ 4.6/5',
+                imagem: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=800&auto=format&fit=crop',
+                descricao: 'Enfrente os lutadores mais fortes do mundo inteiro em batalhas cheias de técnica, Hadoukens e combos sensacionais!',
+                genero: 'Luta',
+                desenvolvedora: 'Capcom',
+                plataforma: 'PC / Arcade',
+                idioma: 'Português'
+            },
+            {
+                id: 'zelda',
+                nome: "The Legend of Zelda",
+                preco: 199.90,
+                avaliacao: "⭐⭐⭐⭐⭐ 4.9/5",
+                imagem: "../../imagem/zelda.jpg",
+                descricao: "The Legend of Zelda é um jogo de ação e aventura onde o herói Link explora masmorras, resolve quebra-cabeças complexos e enfrenta inimigos perigosos para derrotar Ganon e resgatar a Princesa Zelda.",
+                genero: "Aventura / RPG",
+                desenvolvedora: "Nintendo",
+                plataforma: "PC",
+                idioma: "Português"
+            },
+            {
+                id: 'metroid',
+                nome: "Metroid",
+                preco: 119.90,
+                avaliacao: "⭐⭐⭐⭐⭐ 4.8/5",
+                imagem: "../../imagem/metroid.jpg",
+                descricao: "Metroid é um aclamado jogo de ação e aventura da Nintendo. Acompanhe a caçadora de recompensas Samus Aran em sua missão para explorar o planeta Zebes, combater os piratas espaciais e erradicar a ameaça dos Metroids.",
+                genero: "Ação / Aventura",
+                desenvolvedora: "Nintendo",
+                plataforma: "PC / Console",
+                idioma: "Português"
+            }
+        ];
+
+        // --- GESTÃO DO CARRINHO (localStorage) ---
+        
+        // Obtém os dados do carrinho armazenados no navegador
+        function obterCarrinho() {
+            const dados = localStorage.getItem('gamestore_carrinho');
+            return dados ? JSON.parse(dados) : [];
+        }
+
+        // Salva as alterações do carrinho no navegador e atualiza o contador do topo
+        function salvarCarrinho(carrinho) {
+            localStorage.setItem('gamestore_carrinho', JSON.stringify(carrinho));
+            atualizarContadorHeader();
+        }
+
+        // Adiciona um jogo ao carrinho (ou incrementa a quantidade se já existir)
+        function adicionarAoCarrinho(idJogo, quantidade = 1) {
+            const carrinho = obterCarrinho();
+            const index = carrinho.findIndex(item => item.id === idJogo);
+
+            if (index > -1) {
+                carrinho[index].quantidade += quantidade;
+            } else {
+                carrinho.push({ id: idJogo, quantidade: quantidade });
+            }
+
+            salvarCarrinho(carrinho);
+            mostrarToast('🎮 Jogo adicionado ao carrinho!');
+        }
+
+        // Altera a quantidade de um item específico no carrinho (+ ou -)
+        function alterarQuantidade(idJogo, delta) {
+            let carrinho = obterCarrinho();
+            const index = carrinho.findIndex(item => item.id === idJogo);
+
+            if (index > -1) {
+                carrinho[index].quantidade += delta;
+                if (carrinho[index].quantidade <= 0) {
+                    carrinho.splice(index, 1);
+                }
+                salvarCarrinho(carrinho);
+                mostrarPagina('carrinho');
+            }
+        }
+
+        // Remove totalmente um item do carrinho
+        function removerDoCarrinho(idJogo) {
+            let carrinho = obterCarrinho();
+            carrinho = carrinho.filter(item => item.id !== idJogo);
+            salvarCarrinho(carrinho);
+            mostrarPagina('carrinho');
+            mostrarToast('Item removido do carrinho.');
+        }
+
+        // Limpa todo o carrinho após finalizar a compra
+        function limparCarrinho() {
+            localStorage.removeItem('gamestore_carrinho');
+            atualizarContadorHeader();
+        }
+
+        // Atualiza o número exibido na badge do carrinho no cabeçalho
+        function atualizarContadorHeader() {
+            const carrinho = obterCarrinho();
+            const totalItens = carrinho.reduce((sum, item) => sum + item.quantidade, 0);
+            document.getElementById('cart-count').innerText = totalItens;
+        }
+
+        // Exibe a mensagem flutuante (toast) de aviso na tela
+        function mostrarToast(mensagem) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-msg').innerText = mensagem;
+            toast.style.display = 'flex';
+            setTimeout(() => {
+                toast.style.display = 'none';
+            }, 2500);
+        }
+
+        // --- RENDERIZAÇÃO DE PÁGINAS (SPA) ---
+        
+        // Controla qual página/seção será exibida para o usuário
+        function mostrarPagina(pagina, param = null) {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            const container = document.getElementById('app-content');
+
+            if (pagina === 'home') {
+                renderHome(container);
+            } else if (pagina === 'detalhes') {
+                renderDetalhes(container, param);
+            } else if (pagina === 'carrinho') {
+                renderCarrinho(container);
+            }
+        }
+
+        // Renderiza a Página Inicial (Home) com o banner e a grade de produtos
+        function renderHome(container) {
+            let html = `
+                <section class="banner">
+                    <h2>Os melhores games estão aqui!</h2>
+                    <p>Compre seus jogos favoritos pelo melhor preço com entrega digital imediata.</p>
+                </section>
+
+                <section class="produtos" id="jogos">
+                    <h2>🔥 Jogos em destaque</h2>
+                    <div class="grid">
+            `;
+
+            jogos.forEach(jogo => {
+                html += `
+                    <div class="card">
+                        <div class="card-img-wrapper" onclick="mostrarPagina('detalhes', '${jogo.id}')">
+                            <img src="${jogo.imagem}" alt="${jogo.nome}">
+                        </div>
+                        <div class="card-content">
+                            <h3 onclick="mostrarPagina('detalhes', '${jogo.id}')">${jogo.nome}</h3>
+                            <p>${jogo.descricao.substring(0, 75)}...</p>
+                            <div class="preco">R$ ${jogo.preco.toFixed(2).replace('.', ',')}</div>
+                            <div class="botoes-card">
+                                <button class="botao" onclick="adicionarAoCarrinho('${jogo.id}')">🛒 Adicionar</button>
+                                <button class="botao botao-secundario" onclick="comprarAgora('${jogo.id}')">Ver Mais</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            html += `
+                    </div>
+                </section>
+            `;
+
+            container.innerHTML = html;
+        }
+
+        // Renderiza a Página de Detalhes de um Jogo Específico
+        function renderDetalhes(container, idJogo) {
+            const jogo = jogos.find(j => j.id === idJogo);
+            if (!jogo) {
+                mostrarPagina('home');
+                return;
+            }
+
+            container.innerHTML = `
+                <div class="container">
+                    <section class="jogo-detalhe">
+                        <div class="capa">
+                            <img src="${jogo.imagem}" alt="${jogo.nome}">
+                        </div>
+                        <div class="informacoes">
+                            <h2>${jogo.nome}</h2>
+                            <div class="avaliacao">${jogo.avaliacao}</div>
+                            <p class="descricao">${jogo.descricao}</p>
+                            
+                            <div class="detalhes">
+                                <strong>Gênero:</strong> ${jogo.genero}<br>
+                                <strong>Desenvolvedora:</strong> ${jogo.desenvolvedora}<br>
+                                <strong>Plataforma:</strong> ${jogo.plataforma}<br>
+                                <strong>Idioma:</strong> ${jogo.idioma}
+                            </div>
+
+                            <div class="preco-detalhe">
+                                R$ ${jogo.preco.toFixed(2).replace('.', ',')}
+                            </div>
+
+                            <div class="acoes-detalhe">
+                                <button class="botao" onclick="adicionarAoCarrinho('${jogo.id}')">🛒 Adicionar ao Carrinho</button>
+                                <button class="botao botao-secundario" onclick="comprarAgora('${jogo.id}')">⚡ Comprar Agora</button>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            `;
+        }
+
+        // Renderiza a Página do Carrinho de Compras
+        function renderCarrinho(container) {
+            const carrinho = obterCarrinho();
+
+            // Se o carrinho estiver vazio, exibe aviso e botão para voltar à loja
+            if (carrinho.length === 0) {
+                container.innerHTML = `
+                    <div class="container">
+                        <h2>🛒 Meu Carrinho</h2>
+                        <div class="carrinho">
+                            <div class="carrinho-vazio">
+                                <p>Seu carrinho está vazio no momento.</p>
+                                <button class="botao" onclick="mostrarPagina('home')">Explorar Jogos</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+
+            let totalGeral = 0;
+            let itensHtml = '';
+
+            carrinho.forEach(item => {
+                const jogo = jogos.find(j => j.id === item.id);
+                if (jogo) {
+                    const subtotal = jogo.preco * item.quantidade;
+                    totalGeral += subtotal;
+
+                    itensHtml += `
+                        <div class="produto-item">
+                            <img src="${jogo.imagem}" alt="${jogo.nome}">
+                            <div class="produto-info">
+                                <h3>${jogo.nome}</h3>
+                                <p>${jogo.plataforma} • Jogo digital</p>
+                            </div>
+                            <div class="qtd-controle">
+                                <button class="qtd-btn" onclick="alterarQuantidade('${jogo.id}', -1)">-</button>
+                                <span>${item.quantidade}</span>
+                                <button class="qtd-btn" onclick="alterarQuantidade('${jogo.id}', 1)">+</button>
+                            </div>
+                            <div class="preco-item">
+                                R$ ${subtotal.toFixed(2).replace('.', ',')}
+                            </div>
+                            <button class="remover" onclick="removerDoCarrinho('${jogo.id}')">Remover</button>
+                        </div>
+                    `;
+                }
+            });
+
+            container.innerHTML = `
+                <div class="container">
+                    <h2>🛒 Meu Carrinho</h2>
+                    <section class="carrinho">
+                        ${itensHtml}
+                        <div class="total">
+                            <h3>Total: <span>R$ ${totalGeral.toFixed(2).replace('.', ',')}</span></h3>
+                            <button class="botao" onclick="finalizarCompra()">Finalizar Compra</button>
+                        </div>
+                    </section>
+                </div>
+            `;
+        }
+
+        // Atalho para adicionar o item ao carrinho e ir direto para ele
+        function comprarAgora(idJogo) {
+            adicionarAoCarrinho(idJogo, 1);
+            mostrarPagina('carrinho');
+        }
+
+        // Simula a finalização da compra, exibe alerta e limpa o carrinho
+        function finalizarCompra() {
+            const carrinho = obterCarrinho();
+            if (carrinho.length === 0) return;
+
+            alert('🎉 Compra realizada com sucesso!\nObrigado por comprar na Game Store. Os seus jogos digitais já estão disponíveis na sua conta!');
+            limparCarrinho();
+            mostrarPagina('home');
+        }
+
+        // Executado assim que a página é totalmente carregada
+        window.onload = function() {
+            atualizarContadorHeader();
+            mostrarPagina('home');
+        };
+    </script>
+</body>
+</html>
