@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#100b20">
+  <title>Game Store | Sua loja de jogos</title>
+  <!-- ÍCONE PERSONALIZADO DO SITE (favicon): SVG embutido, sem precisar de arquivo externo. -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23120b27'/%3E%3Cpath d='M17 24h30c7 0 12 8 12 19 0 6-5 9-10 5l-8-6H23l-8 6C10 52 5 49 5 43c0-11 5-19 12-19z' fill='%239255ff'/%3E%3Cpath d='M19 31v13M13 37h12' stroke='white' stroke-width='4' stroke-linecap='round'/%3E%3Ccircle cx='43' cy='34' r='3' fill='white'/%3E%3Ccircle cx='50' cy='40' r='3' fill='white'/%3E%3C/svg%3E">
+  <style>
+    /* ===== 1. CORES: altere aqui para personalizar toda a loja ===== */
+    :root { --fundo:#0d0b17; --painel:#191429; --painel2:#241c38; --roxo:#9255ff; --roxo-claro:#b89aff; --texto:#f7f3ff; --cinza:#b8b2c6; --borda:#3a2b56; --perigo:#f16b83; }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { margin:0; font-family:system-ui,-apple-system,Segoe UI,Arial,sans-serif; color:var(--texto); background:var(--fundo); min-height:100vh; display:flex; flex-direction:column; }
+    button,input { font:inherit; }
+    button { cursor:pointer; }
+    a { color:inherit; text-decoration:none; }
+    img { max-width:100%; display:block; }
+    .container { width:min(1180px,92%); margin-inline:auto; }
+    .topo { position:sticky; top:0; z-index:20; background:#110d20f2; border-bottom:1px solid var(--borda); backdrop-filter:blur(12px); }
+    .topo-interno { min-height:76px; display:flex; align-items:center; justify-content:space-between; gap:20px; }
+    .logo { font-size:1.5rem; font-weight:900; color:var(--roxo-claro); white-space:nowrap; }
+    .menu { display:flex; gap:12px; align-items:center; flex-wrap:wrap; }
+    .menu button { border:0; color:var(--texto); background:transparent; padding:10px; border-radius:10px; }
+    .menu button:hover,.menu button:focus-visible { background:var(--painel2); }
+    .contador { background:var(--roxo); padding:2px 7px; border-radius:20px; font-size:.8rem; }
+    main { flex:1; }
+    /* ===== 2. BANNER: troque a URL da imagem de fundo abaixo =====
+       Você também pode usar: url('imagens/banner.jpg')
+       O gradiente escuro garante a leitura do texto sobre a foto. */
+    .banner { min-height:470px; display:grid; align-items:center; background:linear-gradient(90deg,#100b20f5 8%,#100b20d9 50%,#100b2060),url('https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=1800&q=85') center/cover; }
+    .banner-conteudo { padding:65px 0; max-width:720px; }
+    .etiqueta { color:var(--roxo-claro); font-weight:800; letter-spacing:.13em; text-transform:uppercase; font-size:.78rem; }
+    h1,h2,h3,p { margin-top:0; }
+    .banner h1 { font-size:clamp(2.2rem,5vw,4.3rem); line-height:1.08; margin:15px 0; }
+    .banner p { color:#e4ddf1; font-size:1.12rem; line-height:1.65; }
+    .botao { border:1px solid transparent; border-radius:11px; padding:12px 18px; background:var(--roxo); color:white; font-weight:750; display:inline-flex; align-items:center; justify-content:center; gap:8px; transition:.2s; }
+    .botao:hover { background:#7d3eea; transform:translateY(-1px); }
+    .botao-secundario { background:var(--painel2); border-color:var(--borda); }
+    .botao-secundario:hover { background:#37274f; }
+    .botao-perigo { background:transparent; color:var(--perigo); border-color:#753b55; }
+    .botao-perigo:hover { background:#52283a; }
+    .secao { padding:55px 0; }
+    .secao-cabecalho { display:flex; justify-content:space-between; align-items:end; gap:20px; flex-wrap:wrap; margin-bottom:24px; }
+    .secao-cabecalho h2 { margin-bottom:4px; font-size:clamp(1.5rem,3vw,2rem); }
+    .muted { color:var(--cinza); line-height:1.6; }
+    .busca { background:var(--painel); color:var(--texto); border:1px solid var(--borda); border-radius:12px; padding:13px 15px; width:min(350px,100%); outline:none; }
+    .busca:focus { border-color:var(--roxo); box-shadow:0 0 0 3px #9255ff33; }
+    /* ===== ESTILO EXTRA: brilho e acabamento moderno ===== */
+    .logo { display:flex;align-items:center;gap:10px;letter-spacing:-.04em; }
+    .logo-icone { display:inline-grid;place-items:center;width:42px;height:42px;background:linear-gradient(135deg,#bd88ff,#6c2cff);border-radius:13px;box-shadow:0 0 26px #9255ff55;color:white;font-size:1.35rem; }
+    .banner h1 strong { color:#c3a3ff; }
+    .banner-conteudo { position:relative; }
+    .banner-conteudo::before { content:'';position:absolute;inset:20px auto 20px -22px;width:3px;border-radius:5px;background:linear-gradient(transparent,#9255ff,transparent); }
+    .card { box-shadow:0 12px 28px #0004; }
+    .card-imagem { transition:transform .35s ease; }
+    .card a:first-child { overflow:hidden; }
+    .card:hover .card-imagem { transform:scale(1.05); }
+    .video-ajuda { margin-top:12px; font-size:.9rem; }
+    .video-area { padding:24px;background:var(--painel);border:1px solid var(--borda);border-radius:18px; }
+    .video-frame { box-shadow:0 14px 30px #0007; }
+    /* ===== 3. CARDS: grid se ajusta automaticamente ao espaço ===== */
+    .grade { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:23px; }
+    .card { background:var(--painel); border:1px solid var(--borda); border-radius:17px; overflow:hidden; display:flex; flex-direction:column; transition:.2s; }
+    .card:hover { transform:translateY(-4px); border-color:var(--roxo); }
+    .card-imagem { width:100%; height:220px; object-fit:cover; background:var(--painel2); }
+    .card-conteudo { padding:20px; display:flex; flex-direction:column; flex:1; }
+    .card h3 { margin:10px 0; font-size:1.27rem; }
+    .card .muted { font-size:.92rem; flex:1; }
+    .preco { font-weight:900; color:var(--roxo-claro); font-size:1.6rem; margin:12px 0 18px; }
+    .acoes { display:flex; gap:10px; flex-wrap:wrap; }
+    .acoes .botao { flex:1; }
+    /* ===== 4. DETALHES E VÍDEOS ===== */
+    .voltar { margin:30px 0 20px; }
+    .detalhe { display:grid; grid-template-columns:minmax(260px,410px) minmax(0,1fr); gap:30px; background:var(--painel); border:1px solid var(--borda); border-radius:18px; padding:28px; }
+    .detalhe-capa { width:100%; height:460px; object-fit:cover; border-radius:12px; }
+    .detalhe h1 { font-size:clamp(1.8rem,4vw,2.7rem); margin:8px 0 15px; }
+    .ficha { background:#110e1e; border:1px solid var(--borda); padding:17px; border-radius:12px; line-height:1.9; }
+    /* ABAS DE MÍDIA: alternam entre a imagem da gameplay e o vídeo */
+    .midia-abas { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:16px; }
+    .midia-abas button { border:1px solid var(--borda); background:var(--painel2); color:var(--texto); padding:12px 18px; border-radius:10px; cursor:pointer; }
+    .midia-abas button.ativo { background:var(--roxo); border-color:var(--roxo); color:#fff; }
+    .midia-palco { width:100%; aspect-ratio:16/9; overflow:hidden; border-radius:15px; background:#050509; }
+    .midia-palco img, .midia-palco iframe, .midia-palco video { width:100%; height:100%; object-fit:contain; border:0; display:block; }
+    .video-area { margin:35px 0 55px; }
+    .video-area h2 { margin-bottom:15px; }
+    .video-frame { width:100%; aspect-ratio:16/9; border:0; border-radius:15px; background:#050509; }
+    /* ===== 5. CARRINHO ===== */
+    .carrinho { background:var(--painel); border:1px solid var(--borda); border-radius:16px; padding:24px; margin-bottom:50px; }
+    .item { display:grid; grid-template-columns:90px minmax(0,1fr) auto auto; gap:18px; align-items:center; padding:18px 0; border-bottom:1px solid var(--borda); }
+    .item img { width:90px; height:90px; object-fit:cover; border-radius:9px; }
+    .item h3 { margin-bottom:5px; }
+    .controle { display:flex; gap:12px; align-items:center; }
+    .controle button { background:var(--painel2); color:white; border:1px solid var(--borda); width:35px; height:35px; border-radius:8px; }
+    .item-valor { font-weight:800; color:var(--roxo-claro); text-align:right; }
+    .resumo { display:flex; flex-direction:column; align-items:flex-end; gap:12px; padding-top:25px; }
+    .resumo strong { font-size:1.7rem; }
+    .vazio { padding:55px 15px; text-align:center; }
+    .rodape { border-top:1px solid var(--borda); background:#110d20; color:var(--cinza); text-align:center; padding:28px; }
+    .toast { position:fixed; bottom:20px; right:20px; max-width:min(360px,90vw); padding:15px 20px; background:var(--roxo); color:white; border-radius:10px; z-index:50; box-shadow:0 8px 30px #0009; }
+    .escondido { display:none !important; }
+    /* ===== 6. RESPONSIVIDADE: tablet e celular ===== */
+    @media(max-width:900px) { .grade { grid-template-columns:repeat(2,minmax(0,1fr)); } .detalhe { grid-template-columns:1fr; } .detalhe-capa { height:360px; } .item { grid-template-columns:75px 1fr auto; } .item img { width:75px;height:75px; } .item-valor { grid-column:2/4; text-align:left; } }
+    @media(max-width:600px) { .topo-interno { padding:12px 0; flex-direction:column; gap:5px; } .logo { font-size:1.3rem; } .menu { justify-content:center; gap:4px; } .menu button { padding:9px; font-size:.9rem; } .banner { min-height:330px; } .banner-conteudo { padding:45px 0; } .grade { grid-template-columns:1fr; } .secao { padding:35px 0; } .busca { width:100%; } .secao-cabecalho { align-items:stretch; } .card-imagem { height:235px; } .detalhe { padding:16px; } .detalhe-capa { height:280px; } .item { grid-template-columns:65px 1fr; gap:12px; } .item img { width:65px; height:75px; } .controle,.item-valor,.item .botao-perigo { grid-column:2; justify-self:start; } .resumo { align-items:stretch; } .resumo strong { font-size:1.35rem; } }
+    @media(prefers-reduced-motion:reduce) { *,*::before,*::after { scroll-behavior:auto !important; transition:none !important; } }
+  </style>
+</head>
+<body>
+  <!-- ===== CABEÇALHO: botões de navegação ===== -->
+  <header class="topo">
+    <div class="container topo-interno">
+      <a href="#/" class="logo"><span class="logo-icone" aria-hidden="true">🎮</span> Game Store</a>
+      <nav class="menu" aria-label="Navegação principal">
+        <button type="button" data-rota="/">Início</button>
+        <button type="button" data-rota="/catalogo">Jogos</button>
+        <button type="button" data-rota="/carrinho">🛒 Carrinho <span id="contador" class="contador">0</span></button>
+      </nav>
+    </div>
+  </header>
+  <!-- Conteúdo atualizado pelo JavaScript sem recarregar a página -->
+  <main id="app"></main>
+  <footer class="rodape">© 2026 Game Store • Loja demonstrativa para estudos.</footer>
+  <div id="toast" class="toast escondido" role="status" aria-live="polite"></div>
+  <script>
+    'use strict';
+    /* ===== 7. CATÁLOGO =====
+       Para alterar um jogo, edite nome, preço, imagem e demais campos.
+       IMAGENS: use links HTTPS ou arquivos locais, por exemplo "imagens/zelda.jpg".
+       VÍDEOS: preencha videoId com o ID de um vídeo incorporável do YouTube, ou videoArquivo com um MP4 seu.
+       Os IDs preenchidos são exemplos de vídeos encontrados na web.
+       Os demais ficam prontos para receber seus próprios links. */
+    const jogos = [
+      {id:'mario',nome:'Super Mario World',preco:149.90,genero:'Plataforma / Aventura',desenvolvedora:'Nintendo',plataforma:'SNES',idioma:'Varia conforme a edição',nota:'4,8',imagem:'https://images.unsplash.com/photo-1612287230202-1ff1d85d1bdf?auto=format&fit=crop&w=900&q=80',descricao:'Explore o Dinosaur Land com Mario, Luigi e Yoshi, enfrentando fases criativas para salvar a Princesa Peach.',videoId:'GXIvRwmmXKs',videoBusca:'Super Mario World gameplay'},
+      {id:'mortal',nome:'Mortal Kombat',preco:99.90,genero:'Luta',desenvolvedora:'Varia conforme a edição',plataforma:'Varia conforme a edição',idioma:'Varia conforme a edição',nota:'4,9',imagem:'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=900&q=80',descricao:'Uma franquia de luta famosa por personagens marcantes, golpes especiais e combates intensos.',videoId:'dqZwGZBx-t8',videoBusca:'Mortal Kombat gameplay'},
+      {id:'donkey',nome:'Donkey Kong Country',preco:129.90,genero:'Plataforma',desenvolvedora:'Rare / Nintendo',plataforma:'SNES',idioma:'Varia conforme a edição',nota:'4,7',imagem:'https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=900&q=80',descricao:'Acompanhe Donkey Kong e Diddy Kong na aventura para recuperar as bananas roubadas por King K. Rool.',videoId:'Vc-IkK_UDus',videoBusca:'Donkey Kong Country gameplay'},
+      {id:'street',nome:'Street Fighter',preco:79.90,genero:'Luta',desenvolvedora:'Capcom',plataforma:'Varia conforme a edição',idioma:'Varia conforme a edição',nota:'4,6',imagem:'https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=900&q=80',descricao:'Dispute batalhas técnicas com lutadores icônicos, combos e movimentos especiais.',videoId:'',videoBusca:'Street Fighter gameplay'},
+      {id:'zelda',nome:'The Legend of Zelda',preco:199.90,genero:'Aventura / Ação',desenvolvedora:'Nintendo',plataforma:'Varia conforme a edição',idioma:'Varia conforme a edição',nota:'4,9',imagem:'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=900&q=80',descricao:'Entre no universo de Hyrule, explore masmorras e enfrente desafios com o herói Link.',videoId:'',videoBusca:'The Legend of Zelda gameplay'},
+      {id:'metroid',nome:'Metroid',preco:119.90,genero:'Ação / Exploração',desenvolvedora:'Nintendo',plataforma:'Varia conforme a edição',idioma:'Varia conforme a edição',nota:'4,8',imagem:'https://images.unsplash.com/photo-1535223289827-42f1e9919769?auto=format&fit=crop&w=900&q=80',descricao:'Explore ambientes alienígenas e enfrente ameaças como a caçadora de recompensas Samus Aran.',videoId:'',videoBusca:'Metroid gameplay'}
+    ];
+    // Valores, notas e imagens são demonstrativos; verifique edições, licenças e preços antes de vender.
+    const CHAVE = 'gamestore_carrinho';
+    const app = document.getElementById('app');
+    const dinheiro = valor => valor.toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+    const encontrar = id => jogos.find(jogo => jogo.id === id);
+    const rotaJogo = id => '#/jogo/' + encodeURIComponent(id);
+    // Evita interpretar caracteres especiais de dados como HTML.
+    function escapar(texto) { return String(texto).replace(/[&<>"']/g, caractere => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[caractere])); }
+    /* ===== 8. CARRINHO PERSISTENTE =====
+       O localStorage guarda dados apenas neste navegador/dispositivo.
+       Usamos somente ID e quantidade, nunca confiamos em preços armazenados. */
+    function lerCarrinho() {
+      try {
+        const dados = JSON.parse(localStorage.getItem(CHAVE) || '[]');
+        if (!Array.isArray(dados)) return [];
+        return dados.filter(item => item && encontrar(item.id) && Number.isInteger(item.quantidade) && item.quantidade > 0 && item.quantidade <= 999);
+      } catch (erro) { return []; }
+    }
+    function salvarCarrinho(carrinho) {
+      try { localStorage.setItem(CHAVE,JSON.stringify(carrinho)); }
+      catch (erro) { aviso('Não foi possível salvar o carrinho neste navegador.'); }
+      atualizarContador();
+    }
+    function atualizarContador() { document.getElementById('contador').textContent = lerCarrinho().reduce((s,item) => s+item.quantidade,0); }
+    function adicionar(id) {
+      if (!encontrar(id)) return;
+      const carrinho = lerCarrinho(), item = carrinho.find(item => item.id === id);
+      if (item) item.quantidade = Math.min(999,item.quantidade+1);
+      else carrinho.push({id,quantidade:1});
+      salvarCarrinho(carrinho); aviso('🎮 Jogo adicionado ao carrinho!');
+    }
+    function mudarQuantidade(id,delta) {
+      const carrinho = lerCarrinho(), item = carrinho.find(item => item.id === id);
+      if (!item) return;
+      item.quantidade = Math.min(999,item.quantidade+delta);
+      salvarCarrinho(carrinho.filter(item => item.quantidade > 0)); renderizar();
+    }
+    function remover(id) { salvarCarrinho(lerCarrinho().filter(item => item.id !== id)); renderizar(); aviso('Jogo removido.'); }
+    let tempoAviso;
+    function aviso(mensagem) {
+      const elemento = document.getElementById('toast');
+      elemento.textContent = mensagem; elemento.classList.remove('escondido');
+      clearTimeout(tempoAviso); tempoAviso = setTimeout(() => elemento.classList.add('escondido'),2600);
+    }
+    /* ===== 9. COMPONENTES HTML ===== */
+    function card(jogo) {
+      return `<article class="card">
+        <a href="${rotaJogo(jogo.id)}" aria-label="Ver detalhes de ${escapar(jogo.nome)}"><img class="card-imagem" src="${escapar(jogo.imagem)}" alt="Imagem ilustrativa de ${escapar(jogo.nome)}" loading="lazy"></a>
+        <div class="card-conteudo"><span class="etiqueta">${escapar(jogo.genero)}</span><h3>${escapar(jogo.nome)}</h3>
+        <p class="muted">${escapar(jogo.descricao)}</p><div class="preco">${dinheiro(jogo.preco)}</div>
+        <div class="acoes"><button class="botao" data-add="${jogo.id}">🛒 Adicionar</button><a class="botao botao-secundario" href="${rotaJogo(jogo.id)}">Detalhes</a></div></div></article>`;
+    }
+    function catalogo(comBanner = false) {
+      app.innerHTML = `${comBanner ? `<section class="banner"><div class="container banner-conteudo"><span class="etiqueta">Sua próxima aventura começa aqui</span><h1>Seu próximo jogo.<br><strong>Sua próxima aventura.</strong></h1><p>Descubra clássicos, explore mundos incríveis e encontre seu próximo jogo favorito.</p><a class="botao" href="#/catalogo">Explorar jogos →</a></div></section>` : ''}
+      <section class="secao container" id="jogos"><div class="secao-cabecalho"><div><h2>🔥 ${comBanner?'Jogos em destaque':'Catálogo de jogos'}</h2><p class="muted">Explore os seis títulos disponíveis.</p></div>
+      <input id="pesquisa" class="busca" type="search" placeholder="Pesquisar nome ou gênero..." aria-label="Pesquisar jogos"></div>
+      <p id="resultado" class="muted" aria-live="polite"></p><div id="grade" class="grade"></div></section>`;
+      const busca = document.getElementById('pesquisa');
+      function filtrar() {
+        const termo = busca.value.trim().toLocaleLowerCase('pt-BR');
+        const encontrados = jogos.filter(j => (j.nome+' '+j.genero+' '+j.descricao).toLocaleLowerCase('pt-BR').includes(termo));
+        document.getElementById('resultado').textContent = `${encontrados.length} jogo(s) encontrado(s)`;
+        document.getElementById('grade').innerHTML = encontrados.length ? encontrados.map(card).join('') : '<p class="muted">Nenhum jogo encontrado. Tente outro termo.</p>';
+      }
+      busca.addEventListener('input',filtrar); filtrar();
+    }
+    function detalhes(id) {
+      const j = encontrar(id);
+      if (!j) { app.innerHTML = '<div class="container secao"><h1>Jogo não encontrado</h1><a class="botao" href="#/catalogo">Voltar ao catálogo</a></div>'; return; }
+      /* ===== VÍDEO DENTRO DA PÁGINA =====
+         Opção A: videoId: 'ABC123' -> incorpora vídeo do YouTube.
+         Pegue o código depois de "v=" em https://www.youtube.com/watch?v=ABC123.
+         Opção B: videoArquivo: 'videos/mario.mp4' -> reproduz arquivo local.
+         O vídeo local tem prioridade; assim você pode usar seu próprio trailer.
+         Se não houver vídeo configurado, mostramos um PLAYER de demonstração
+         usando o vídeo de Donkey Kong ou Mortal Kombat? NÃO: evitamos exibir
+         um jogo diferente. Aparece orientação para inserir o vídeo correto.
+         OBS.: Alguns canais bloqueiam incorporação em sites externos. */
+      const video = j.videoArquivo
+        ? `<video class="video-frame" controls playsinline preload="metadata" poster="${escapar(j.imagem)}"><source src="${escapar(j.videoArquivo)}" type="video/mp4">Seu navegador não suporta vídeos HTML5.</video>`
+        : j.videoId
+          ? `<iframe class="video-frame" src="https://www.youtube-nocookie.com/embed/${encodeURIComponent(j.videoId)}?rel=0" title="Vídeo demonstrativo de ${escapar(j.nome)}" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>`
+          : `<div class="ficha"><p>▶ Adicione um vídeo para <strong>${escapar(j.nome)}</strong> editando o campo <code>videoId</code> no catálogo.</p><a class="botao botao-secundario" href="https://www.youtube.com/results?search_query=${encodeURIComponent(j.videoBusca)}" target="_blank" rel="noopener noreferrer">Encontrar vídeo deste jogo ↗</a></div>`;
+      app.innerHTML = `<div class="container"><div class="voltar"><a href="#/catalogo">← Voltar aos jogos</a></div><section class="detalhe"><img class="detalhe-capa" src="${escapar(j.imagem)}" alt="Imagem ilustrativa de ${escapar(j.nome)}"><div><span class="etiqueta">${escapar(j.genero)}</span><h1>${escapar(j.nome)}</h1><p>⭐ Avaliação ilustrativa: ${escapar(j.nota)}/5</p><p class="muted">${escapar(j.descricao)}</p><div class="ficha"><strong>Gênero:</strong> ${escapar(j.genero)}<br><strong>Desenvolvedora:</strong> ${escapar(j.desenvolvedora)}<br><strong>Plataforma:</strong> ${escapar(j.plataforma)}<br><strong>Idioma:</strong> ${escapar(j.idioma)}</div><div class="preco">${dinheiro(j.preco)}</div><div class="acoes"><button class="botao" data-add="${j.id}">🛒 Adicionar ao carrinho</button><button class="botao botao-secundario" data-comprar="${j.id}">Ir para o carrinho</button></div></div></section><section class="video-area"><h2>🎮 Gameplay e vídeo demonstrativo</h2>
+      <!-- Clique nas abas para alternar. Ao voltar à imagem, o vídeo é removido e para de tocar. -->
+      <div class="midia-abas" role="group" aria-label="Escolher imagem ou vídeo"><button type="button" class="ativo" data-midia="imagem" aria-pressed="true">🖼️ Imagem da gameplay</button><button type="button" data-midia="video" aria-pressed="false">▶ Assistir vídeo</button></div>
+      <div id="midia-palco" class="midia-palco" data-imagem="${escapar(j.imagem)}" data-nome="${escapar(j.nome)}"><img src="${escapar(j.imagem)}" alt="Imagem ilustrativa de ${escapar(j.nome)}"></div>
+      <template id="video-template">${video}</template><p class="muted video-ajuda">Clique em reproduzir. É necessária conexão com a internet para vídeos do YouTube.</p></section></div>`;
+    }
+    function carrinho() {
+      const itens = lerCarrinho();
+      if (!itens.length) { app.innerHTML = '<div class="container secao"><h1>🛒 Meu carrinho</h1><div class="carrinho vazio"><h2>Seu carrinho está vazio</h2><p class="muted">Adicione jogos para ver o resumo da compra.</p><a href="#/catalogo" class="botao">Explorar jogos</a></div></div>'; return; }
+      const total = itens.reduce((s,item) => s+encontrar(item.id).preco*item.quantidade,0);
+      app.innerHTML = `<div class="container secao"><h1>🛒 Meu carrinho</h1><div class="carrinho">${itens.map(item => { const j=encontrar(item.id); return `<div class="item"><img src="${escapar(j.imagem)}" alt="${escapar(j.nome)}"><div><h3>${escapar(j.nome)}</h3><p class="muted">Preço unitário: ${dinheiro(j.preco)}</p></div><div class="controle"><button data-qtd="${j.id}" data-delta="-1" aria-label="Diminuir quantidade de ${escapar(j.nome)}">−</button><strong>${item.quantidade}</strong><button data-qtd="${j.id}" data-delta="1" aria-label="Aumentar quantidade de ${escapar(j.nome)}">+</button></div><div class="item-valor">${dinheiro(j.preco*item.quantidade)}</div><button class="botao botao-perigo" data-remover="${j.id}">Remover</button></div>`; }).join('')}<div class="resumo"><strong>Total: ${dinheiro(total)}</strong><p class="muted">Demonstração: não há cobrança ou entrega real.</p><button class="botao" data-finalizar>Simular finalização</button></div></div></div>`;
+    }
+    /* ===== 10. NAVEGAÇÃO =====
+       As URLs usam #/ para funcionar mesmo ao abrir este HTML diretamente. */
+    function navegar(caminho) { window.location.hash = '#' + caminho; if (window.location.hash === '#' + caminho) renderizar(); }
+    function renderizar() {
+      const caminho = decodeURIComponent(window.location.hash.slice(1) || '/');
+      if (caminho === '/') catalogo(true);
+      else if (caminho === '/catalogo') catalogo();
+      else if (caminho === '/carrinho') carrinho();
+      else if (caminho.startsWith('/jogo/')) detalhes(caminho.slice(6));
+      else app.innerHTML = '<div class="container secao"><h1>Página não encontrada</h1><a class="botao" href="#/">Ir para início</a></div>';
+      atualizarContador(); window.scrollTo({top:0,behavior:'instant'});
+    }
+    /* ===== 11. EVENTOS DOS BOTÕES =====
+       Delegação de eventos: funciona mesmo com páginas criadas dinamicamente. */
+    document.addEventListener('click',evento => {
+      const botao = evento.target.closest('button'); if (!botao) return;
+      /* Alternância de mídia: o vídeo só carrega ao clicar em "Assistir vídeo".
+         Isso evita tocar vídeo em segundo plano e economiza dados móveis. */
+      if (botao.hasAttribute('data-midia')) {
+        const palco = document.getElementById('midia-palco');
+        const modelo = document.getElementById('video-template');
+        if (palco && modelo) {
+          const mostrarVideo = botao.dataset.midia === 'video';
+          palco.replaceChildren(); // Destrói o iframe anterior e interrompe a reprodução.
+          if (mostrarVideo) palco.append(modelo.content.cloneNode(true));
+          else {
+            const imagem = document.createElement('img');
+            imagem.src = palco.dataset.imagem;
+            imagem.alt = 'Imagem ilustrativa de ' + palco.dataset.nome;
+            palco.append(imagem);
+          }
+          document.querySelectorAll('[data-midia]').forEach(aba => {
+            const ativo = aba === botao;
+            aba.classList.toggle('ativo', ativo);
+            aba.setAttribute('aria-pressed', String(ativo));
+          });
+        }
+      }
+      if (botao.hasAttribute('data-rota')) navegar(botao.dataset.rota);
+      if (botao.hasAttribute('data-add')) adicionar(botao.dataset.add);
+      if (botao.hasAttribute('data-comprar')) { adicionar(botao.dataset.comprar); navegar('/carrinho'); }
+      if (botao.hasAttribute('data-qtd')) mudarQuantidade(botao.dataset.qtd,Number(botao.dataset.delta));
+      if (botao.hasAttribute('data-remover')) remover(botao.dataset.remover);
+      if (botao.hasAttribute('data-finalizar')) aviso('Simulação concluída! Nenhum pagamento foi realizado.');
+    });
+    window.addEventListener('hashchange',renderizar);
+    renderizar();
+  </script>
+</body>
+</html>
